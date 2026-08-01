@@ -3,7 +3,7 @@
 // still to do: dietary, delivery, menu link
 let RestaurantInfo = [];
 
-funtion addRestaurant(name, image, cuisine, hours, address, distance, rating, price) {
+function addRestaurant(name, image, cuisine, hours, address, distance, rating, price) {
 RestaurantInfo.push({
     Name: name,
     image: image,
