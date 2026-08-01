@@ -22,6 +22,7 @@
     <!-- Frontend -->
     <link rel="stylesheet" href="css/frontend.css">
     <script src="js/frontend/frontend.js"></script>
+    <script src="js/backend/backend.js"></script>
 
     <!-- Backend -->
     <script src="js/backend/backend.js"></script>
@@ -132,9 +133,10 @@
             <p class="text-body-tertiary mt-1 mb-md-5">Anyone with this link can join your group.</p>
 
             <a id="button" class="container-md btn fw-bold fs-5 my-md-5 text-center text-white bg-danger rounded-3"
-        href='card.html'>Start swiping</a>
+        onclick="getLocation()">Start swiping</a>
+        
         </div>
-
+        <p id="test"></p>
         <div class="container col-11 col-md-6 col-lg-4 mx-auto my-md-5 my-3">
             <p class="fs-4 list-group my-4">Group Members: </p>
 
