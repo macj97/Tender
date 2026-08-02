@@ -31,12 +31,12 @@ $(function() {
             restaurant["Cuisine"]+
             '</p><p class="card-text">'+
             restaurant["Hours"]+
-            '</p><p class="card-text">'+
-            restaurant["Rating"]+' out of 5 stars, '+restaurant["Price"]+
-            '</p><p class="card-text text-success fw-bold float-start">'+
+            //'</p><p class="card-text">'+
+            //restaurant["Rating"]+' out of 5 stars, '+restaurant["Price"]+
+            '</p><p class="card-text text-success fw-bold">'+
             restaurant["Address"]+
-            '</p><p class="card-text text-secondary fw-bold float-end text-end">'+
-            restaurant["Distance"]+
+            //'</p><p class="card-text text-secondary fw-bold float-end text-end">'+
+            //restaurant["Distance"]+
             '</p></div> </div>'+
             '<div class="d-flex justify-content-center gap-3 mt-3">'+
             '<button id="back-btn" class="btn btn-outline-secondary">Back</button>'+
@@ -222,7 +222,9 @@ $(function() {
 
     //check which page we are on
     if ($("#card-root").length > 0) {
-        generateCard();
+        loadTestRestaurants(function() {
+            generateCard();
+        });
     }
 
     if ($("#results-list").length > 0) {

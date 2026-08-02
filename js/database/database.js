@@ -1,6 +1,4 @@
-$(function() {
-
-    // keeps the votes until we have supabase
+ // keeps the votes until we have supabase
 
     let GroupSize = 4;
 
@@ -77,4 +75,3 @@ $(function() {
         return matches;
     }
 
-});
