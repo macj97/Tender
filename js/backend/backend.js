@@ -32,7 +32,24 @@ out geom;`;
     url: "https://overpass-api.de/api/interpreter",
     data: { data: query },
     success: function (result) {
-      console.log(JSON.stringify(result, null));
+      RestaurantInfo.length = 0;
+
+      for(let i = 0; i < 10 && i < result.elements.length; i++) { 
+        let place = result.elements[i];
+        let tags = place.tags || {};
+
+        addRestaurant(
+          tags.name || "Unknown",
+          "data/panera.jpeg",
+          tags.cuisine || "Unknown",
+          tags.opening_hours || "Unknown",
+          tags["addr:city"] || "Unknown"
+        );
+      }
+      //console.log(JSON.stringify(result, null));
+      console.log(RestaurantInfo);
+      sessionStorage.setItem("RestaurantInfo", JSON.stringify(RestaurantInfo));
+      window.location.href = "card.html";
     },
   });
 
