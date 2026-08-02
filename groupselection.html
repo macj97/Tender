@@ -22,7 +22,6 @@
     <!-- Frontend -->
     <link rel="stylesheet" href="css/frontend.css">
     <script src="js/frontend/frontend.js"></script>
-    <script src="js/backend/backend.js"></script>
 
     <!-- Backend -->
     <script src="js/backend/backend.js"></script>
@@ -50,71 +49,15 @@
             
             <ul class="dropdown-menu">
                 <li>
-                    <label for="sel1" class="form-label"><h5>Distance (select one):</h5></label>
-                        <select class="form-select" id="sel1" name="sellist1">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                            <option>6</option>
-                            <option>7</option>
-                            <option>8</option>
-                            <option>9</option>
-                            <option>10</option>
-                        </select>
-                </li>
-                <li><h5>Allergies:</h5></li>
-                <li>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="check1" 
-                            name="option1" value="something">
-                        <label class="form-check-label" for="check1">Milk</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="check2" 
-                            name="option2" value="something">
-                        <label class="form-check-label" for="check2">Egg</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="check3" 
-                            name="option3" value="something">
-                        <label class="form-check-label" for="check3">Peanut</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="check4" 
-                            name="option4" value="something">
-                        <label class="form-check-label" for="check4">Treenut</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="check5" 
-                            name="option5" value="something">
-                        <label class="form-check-label" for="check5">Soy</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="check6" 
-                            name="option6" value="something">
-                        <label class="form-check-label" for="check6">Wheat</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="check7" 
-                            name="option7" value="something">
-                        <label class="form-check-label" for="check7">Fish</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="check8" 
-                            name="option8" value="something">
-                        <label class="form-check-label" for="check8">Shellfish</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="check9" 
-                            name="option9" value="something">
-                        <label class="form-check-label" for="check9">Sesame</label>
-                    </div>
+                    <label for="distance-range-slider" class="form-label">
+                        <h5>Distance: <span id="distance-range-slider-num"></span> miles</h5></label>
+                    
+                    <input type="range" class="form-range" id="distance-range-slider" min="1" max="10">
                 </li>
             </ul>
         </div>
     </div>
+
     <div class="row my-md-5 my-1">
         <div class="container col-11 col-md-6 col-lg-4 mx-auto">
             <p class="fs-2 fw-bold mt-3">Your group</p>
@@ -137,6 +80,7 @@
         onclick="getLocation()">Start swiping</a>
         
         </div>
+
         <p id="test"></p>
         <div class="container col-11 col-md-6 col-lg-4 mx-auto my-md-5 my-3">
             <p class="fs-4 list-group my-4">Group Members: </p>
