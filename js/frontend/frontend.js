@@ -1,4 +1,5 @@
 $(function() {
+
     let currentIndex = 0;  //Keeps track of which restaurant we are on
     let startX = 0;      // saves where the drag started
     let isSwiping = false;    //checks if the user is dragging
@@ -65,6 +66,7 @@ $(function() {
         //added backup buttons to the cards so they can still be tested without dragging
         addSwipeEvents();
     }
+
     //goes back one card
     function goBack() {
         if (isAnimating || currentIndex === 0) {
@@ -75,6 +77,7 @@ $(function() {
         removeLike(RestaurantInfo[currentIndex].Name);
         generateCard();
     }
+
     //this function handles the visual swipe effect before moving to the next card
     function animateSwipe(voteType) {
         if (isAnimating) {
@@ -102,11 +105,13 @@ $(function() {
             goToNextCard();   //loads the next card
         }, 700);
     }
+
     function goToNextCard() {
         currentIndex = currentIndex + 1;
         isAnimating = false;
         generateCard();
     }
+
     //Here we are using drag, mouse, touch events from W3school
     function addSwipeEvents() {
         const $card = $("#restaurant-card");
@@ -156,6 +161,7 @@ $(function() {
             }
         });
     }
+
     //builds the results rows
     function showResults() {
         let matches = getMatches();
@@ -198,6 +204,22 @@ $(function() {
         });
     }
 
+    //shows the number of the distance range-slider in settings
+    let $distRangeSlider = $("#distance-range-slider");
+    let $distance_range_slider_num = $("#distance-range-slider-num");
+
+    // console.log("current range-slider value: ", $distRangeSlider.val());
+    $distance_range_slider_num.html($distRangeSlider.val())
+
+    //changed to default of 1
+    $distRangeSlider.val(1);
+    // console.log("changed range-slider value: ", $distRangeSlider.val());
+
+    $("#distance-range-slider").click(function () {
+        console.log("changed range-slider value", $distRangeSlider.val());
+        $distance_range_slider_num.html($distRangeSlider.val())
+    });
+
     //check which page we are on
     if ($("#card-root").length > 0) {
         loadTestRestaurants(function() {
@@ -209,6 +231,9 @@ $(function() {
         showResults();
     }
 });
+
+
+
 /*
 $(function() {
 
