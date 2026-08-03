@@ -228,7 +228,9 @@ $(function() {
     }
 
     if ($("#results-list").length > 0) {
-        showResults();
+        loadTestRestaurants(function() {
+            showResults();
+        });
     }
 });
 

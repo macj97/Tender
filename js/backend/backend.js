@@ -38,12 +38,31 @@ out geom;`;
         let place = result.elements[i];
         let tags = place.tags || {};
 
+        // build address by housenumber, street, and city
+        let address = "";
+        if (tags["addr:housenumber"]) {
+          address = tags["addr:housenumber"];
+        }
+        if (tags["addr:street"]) {
+          if (address) {
+            address += " ";
+          }
+          address += tags["addr:street"];
+        }
+        if (tags["addr:city"]) {
+          if (address) {
+            address += ", ";
+          }
+          address += tags["addr:city"];
+        }
+
+        // default to "No image available" for the restaurant pic
         addRestaurant(
-          tags.name || "Unknown",
-          "data/panera.jpeg",
-          tags.cuisine || "Unknown",
-          tags.opening_hours || "Unknown",
-          tags["addr:city"] || "Unknown"
+          tags.name || "Name Unknown",
+          "data/no-image-available.jpeg",
+          tags.cuisine || "Cuisine Unknown",
+          tags.opening_hours || "Hours Unknown",
+          address
         );
       }
       //console.log(JSON.stringify(result, null));
