@@ -5,9 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!--Timer to auto-redirect-->
-    <meta http-equiv="refresh" content="3; url=results.html">
-
     <title>Tender</title>
 
     <!-- Bootstrap -->
@@ -23,9 +20,19 @@
 
     <!-- Frontend -->
     <link rel="stylesheet" href="css/frontend.css">
-    <!-- <script src="js/frontend/frontend.js"></script> -->
-    <!-- <script src="js/frontend/restaurantInfo.js"></script> -->
 
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script defer src="js/database/supabase-config.js"></script>
+    <script defer src="js/database/cloud.js"></script>
+    <script defer src="js/database/google-config.js"></script>
+    <script defer src="js/database/settings.js"></script>
+    <script defer src="js/frontend/restaurantInfo.js"></script>
+    <script defer src="js/database/database.js"></script>
+    <script defer src="js/backend/backend.js"></script>
+    <script defer src="js/backend/places.js"></script>
+    <script defer src="js/frontend/frontend.js"></script>
+    <script defer src="js/frontend/pages.js"></script>
 
 </head>
 
@@ -36,16 +43,19 @@
     <div class="row my-md-5 my-3">
 
         <div id="header" class="container col-12 col-md-6 col-lg-4 text-center mx-auto">
-            <img src="img/Tender-Logo.png" alt="Logo" id="logo" class="my-md-2">
-            <!-- <h2 class="my-md-2 fw-bold">Tender</h2> -->
+            <img src="img/Tender-Logo.png" alt="Logo" style="width: 100px;height: 100px;" id="logo" class="my-md-2">
             <h1 id="welcome" class="my-5 fw-bold">Finding your matches</h1>
-            <p id="instructions" class="text-start text-secondary text-center fs-3 my-5 mx-2">
-                Comparing everyone’s choices</p>
-            <div class="spinner-border text-danger" role="status">
+            <p class="instructions text-secondary text-center fs-3 my-5 mx-2">
+                Comparing everyone's choices</p>
+            <!-- id for pages.js -->
+            <div id="waiting-spinner" class="spinner-border text-danger" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
-            <p id="instructions" class="text-start text-secondary text-center fs-3 my-5 mx-2">
+            <p class="instructions text-secondary text-center fs-3 my-5 mx-2">
                 This will only take a moment</p>
+
+            <!-- skip link -->
+            <a href="results.html" class="text-secondary">See results</a>
         </div>
 
     </div>

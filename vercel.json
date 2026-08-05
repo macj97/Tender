@@ -1,0 +1,5 @@
+{
+  "buildCommand": "sh scripts/make-config.sh",
+  "outputDirectory": ".",
+  "framework": null
+}
