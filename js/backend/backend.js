@@ -23,8 +23,8 @@ function osmAddress(tags) {
 
 
 // the main overpass server goes down a lot so theres backups
-// "https://overpass-api.de/api/interpreter" was the first listed
 const OVERPASS_URLS = [
+    // "https://overpass-api.de/api/interpreter",
     "https://overpass.kumi.systems/api/interpreter",
     "https://overpass.private.coffee/api/interpreter"
 ];
@@ -45,6 +45,7 @@ function searchNearbyOSM(latitude, longitude, onDone, which) {
     $.ajax({
         type: "GET",
         url: OVERPASS_URLS[which],
+        CrossDomain: true,
         data: { data: query },
         
         success: function (result) {
