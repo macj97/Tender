@@ -46,8 +46,7 @@ function searchNearbyOSM(latitude, longitude, onDone, which) {
         type: "GET",
         url: OVERPASS_URLS[which],
         data: { data: query },
-        timeout: 20000,
-
+        
         success: function (result) {
             onDone(true, result.elements);
         },
