@@ -45,7 +45,7 @@ function searchNearbyOSM(latitude, longitude, onDone, which) {
     $.ajax({
         type: "GET",
         url: OVERPASS_URLS[which],
-        CrossDomain: true,
+        crossDomain: true,
         data: { data: query },
         
         success: function (result) {
