@@ -46,7 +46,6 @@ function searchNearbyOSM(latitude, longitude, onDone, which) {
         type: "GET",
         url: OVERPASS_URLS[which],
         crossDomain: true,
-        dataType: "jsonp",
         data: { data: query },
         
         success: function (result) {
