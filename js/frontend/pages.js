@@ -18,7 +18,7 @@ $(function() {
 
     //makes the group first
     $("#hungry-btn").on("click", function(event) {
-        if (!db) {
+        if (!db) { // Joe: what is this?
             return;
         }
 
