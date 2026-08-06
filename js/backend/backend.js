@@ -1,93 +1,101 @@
-// https://www.w3schools.com/html/html5_geolocation.asp
-// code snippet from w3schools.com
+// build address by housenumber, street, and city
+function osmAddress(tags) {
+    let address = "";
 
-function getLocation() {
-  alert("Getting your location...");
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(success, error);
-  } else {
-    alert("Geolocation is not supported by this browser.");
-  }
-}
-
-function success(position) {
-  // filler alert function
-  alert("Latitude: " + position.coords.latitude + "Longitude: " + position.coords.longitude);
-  searchNearby(position.coords.latitude, position.coords.longitude);
-}
-
-function error() {
-  alert("Sorry, no position available.");
-}
-
-
-// end of code snippet
-
-async function searchNearby(latitude, longitude) {
-  let query = `[out:json];node['amenity'='restaurant'](around:5000.0,${latitude},${longitude});
-out geom;`;
-
-  $.ajax({
-    type: 'GET',
-    url: "https://overpass-api.de/api/interpreter",
-    data: { data: query },
-    success: function (result) {
-      RestaurantInfo.length = 0;
-
-      for(let i = 0; i < 10 && i < result.elements.length; i++) { 
-        let place = result.elements[i];
-        let tags = place.tags || {};
-
-        // build address by housenumber, street, and city
-        let address = "";
-        if (tags["addr:housenumber"]) {
-          address = tags["addr:housenumber"];
-        }
-        if (tags["addr:street"]) {
-          if (address) {
+    if (tags["addr:housenumber"]) {
+        address = tags["addr:housenumber"];
+    }
+    if (tags["addr:street"]) {
+        if (address) {
             address += " ";
-          }
-          address += tags["addr:street"];
         }
-        if (tags["addr:city"]) {
-          if (address) {
+        address += tags["addr:street"];
+    }
+    if (tags["addr:city"]) {
+        if (address) {
             address += ", ";
-          }
-          address += tags["addr:city"];
         }
+        address += tags["addr:city"];
+    }
+
+    return address;
+}
+
+
+// the main overpass server goes down a lot so theres backups
+const OVERPASS_URLS = [
+    "https://overpass-api.de/api/interpreter",
+    "https://overpass.kumi.systems/api/interpreter",
+    "https://overpass.private.coffee/api/interpreter"
+];
+
+function searchNearbyOSM(latitude, longitude, onDone, which) {
+    if (!which) {
+        which = 0;
+    }
+
+    let miles = getSettings().distanceMiles;
+
+    // needs meters
+    let metres = miles * 1609;
+
+    let query = "[out:json];node['amenity'='restaurant'](around:" + metres + "," +
+        latitude + "," + longitude + ");out geom;";
+
+    $.ajax({
+        type: "GET",
+        url: OVERPASS_URLS[which],
+        data: { data: query },
+        timeout: 20000,
+
+        success: function (result) {
+            onDone(true, result.elements);
+        },
+
+        error: function () {
+            if (which + 1 < OVERPASS_URLS.length) {
+                console.log("that overpass server didnt work, trying the next one");
+                searchNearbyOSM(latitude, longitude, onDone, which + 1);
+                return;
+            }
+
+            onDone(false);
+        }
+    });
+}
+
+
+// turn json into our restaurant list
+function fillFromOSM(elements) {
+    RestaurantInfo.length = 0;
+
+    // for 2 places with the same name
+    let seenNames = [];
+
+    for (let i = 0; i < elements.length; i++) {
+        if (RestaurantInfo.length === 10) {
+            break;
+        }
+
+        let place = elements[i];
+        let tags = place.tags || {};
+        let name = tags.name || "Name Unknown";
+
+        if (seenNames.indexOf(name) > -1) {
+            continue;
+        }
+
+        seenNames.push(name);
 
         // default to "No image available" for the restaurant pic
         addRestaurant(
-          tags.name || "Name Unknown",
-          "data/no-image-available.jpeg",
-          tags.cuisine || "Cuisine Unknown",
-          tags.opening_hours || "Hours Unknown",
-          address
+            name,
+            "data/no-image-available.jpeg",
+            tags.cuisine || "Cuisine Unknown",
+            tags.opening_hours || "Hours Unknown",
+            osmAddress(tags)
         );
-      }
-      //console.log(JSON.stringify(result, null));
-      console.log(RestaurantInfo);
-      sessionStorage.setItem("RestaurantInfo", JSON.stringify(RestaurantInfo));
-      window.location.href = "card.html";
-    },
-  });
+    }
 
+    console.log("loaded restaurants: ", RestaurantInfo.length);
 }
-
-$(function() {
-
-    // distance setting
-
-    let distance = $("#distance-range-slider").val();
-
-    // console.log("distance: ", distance);
-
-    $("#distance-range-slider").click(function () {
-        distance = $("#distance-range-slider").val()
-        console.log("distance is now: ", distance);
-    });
-
-
-    // dietary settings
-
-});

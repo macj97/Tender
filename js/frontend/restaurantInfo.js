@@ -9,59 +9,89 @@ function addRestaurant(name, image, cuisine, hours, address) {
         image: image,
         Cuisine: cuisine,
         Hours: hours,
-        Address: address,
-        //Distance: distance,
-        //Rating: rating,
-        //Price: price
+        Address: address
     });
 }
 
 
-// Fills RestaurantInfo from data/test.json
-// whenDone() runs after the file is read
-function loadTestRestaurants(whenDone) {
-
-    $.getJSON('data/test.json', function (result) {
-    RestaurantInfo.length = 0
-
-    // same first 10 that searchNearby() takes
-    for (let i = 0; i < 10 && i < result.elements.length; i++) {
-        let place = result.elements[i]
-        let tags = place.tags || {}
-        let address = ''
-        if (tags['addr:housenumber']) {
-            address = tags['addr:housenumber']
-        }
-        if (tags['addr:street']) {
-            if (address) {
-                address += ' '
-            }
-            address += tags['addr:street']
-        }
-        if (tags['addr:city']) {
-            if (address) {
-                address += ', '
-            }
-            address += tags['addr:city']
-        }
-
-        addRestaurant (
-            tags.name || 'Name Unknown',
-            'data/no-image-available.jpeg',
-            tags.cuisine || 'Cuisine Unknown',
-            tags.opening_hours || 'Hours Unknown',
-            address
-        )
+// Fills RestaurantInfo from openstreetmap
+function loadRestaurants(whenDone) {
+    if (!haveLocation()) {
+        whenDone(false);
+        return;
     }
 
-    console.log('loaded test restaurants: ', RestaurantInfo.length)
+    let settings = getSettings();
 
-    whenDone()
+    // dont search twice for the same thing
+    let saved = getSavedSearch(settings.lat, settings.lon, settings.distanceMiles);
 
-    }).fail(function () {
-        // without this a missing or broken test.json just leaves a blank page
-        console.error('could not read data/test.json, no restaurants to show')
-        whenDone()
-    })
+    if (saved) {
+        RestaurantInfo.length = 0;
+
+        for (let i = 0; i < saved.places.length; i++) {
+            let place = saved.places[i];
+            addRestaurant(place.Name, place.image, place.Cuisine, place.Hours, place.Address);
+        }
+
+        whenDone(true);
+        return;
+    }
+
+    searchNearbyOSM(settings.lat, settings.lon, function (ok, elements) {
+        if (!ok) {
+            whenDone(false);
+            return;
+        }
+
+        fillFromOSM(elements);
+
+        if (RestaurantInfo.length === 0) {
+            whenDone(false);
+            return;
+        }
+
+        addPhotos(function () {
+            saveSearch(settings.lat, settings.lon, settings.distanceMiles, RestaurantInfo);
+            whenDone(true);
+        });
+    });
 }
-    
+
+
+// keeps the last search
+const SEARCH_KEY = 'tenderLastSearch'
+const SEARCH_MINUTES = 10
+
+// rounded off
+function searchKeyFor(lat, lon, miles) {
+    return lat.toFixed(3) + ',' + lon.toFixed(3) + ',' + miles
+}
+
+function getSavedSearch(lat, lon, miles) {
+    let raw = localStorage.getItem(SEARCH_KEY)
+
+    if (!raw) {
+        return null
+    }
+
+    let saved = JSON.parse(raw)
+
+    if (saved.key !== searchKeyFor(lat, lon, miles)) {
+        return null
+    }
+
+    if (new Date().getTime() - saved.when > SEARCH_MINUTES * 60 * 1000) {
+        return null
+    }
+
+    return saved
+}
+
+function saveSearch(lat, lon, miles, places) {
+    localStorage.setItem(SEARCH_KEY, JSON.stringify({
+        key: searchKeyFor(lat, lon, miles),
+        when: new Date().getTime(),
+        places: places
+    }))
+}
