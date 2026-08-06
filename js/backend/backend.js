@@ -23,6 +23,7 @@ function osmAddress(tags) {
 
 
 // the main overpass server goes down a lot so theres backups
+// "https://overpass-api.de/api/interpreter" was the first listed
 const OVERPASS_URLS = [
     "https://overpass-api.de/api/interpreter",
     "https://overpass.kumi.systems/api/interpreter",
