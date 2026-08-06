@@ -55,7 +55,7 @@ function searchNearbyOSM(latitude, longitude, onDone, which) {
 
         error: function () {
             if (which + 1 < OVERPASS_URLS.length) {
-                console.log("that overpass server didnt work, trying the next one");
+                alert("that overpass server didnt work, trying the next one");
                 searchNearbyOSM(latitude, longitude, onDone, which + 1);
                 return;
             }
