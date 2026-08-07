@@ -81,7 +81,7 @@ function getSavedSearch(lat, lon, miles) {
         return null
     }
 
-    if (new Date().getTime() - saved.when > SEARCH_MINUTES * 60 * 1000) {
+    if (new Date().getTime() - saved.when > SEARCH_MINUTES * 60 * 1000) { // time limit?
         return null
     }
 

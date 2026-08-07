@@ -22,7 +22,7 @@ create table if not exists places (
   cuisine     text default '',
   hours       text default '',
   address     text default '',
-
+  -- distance?
   photo_ref   text default ''
 );
 

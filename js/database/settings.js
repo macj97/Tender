@@ -40,7 +40,7 @@ function haveLocation() {
 
 
 // asks the browser for the location
-function askForLocation(onDone) {
+function askForLocation(onDone) { // Joe: onDone is a function? what else does this function do?
     if (!navigator.geolocation) {
         onDone(false);
         return;

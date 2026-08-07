@@ -13,12 +13,11 @@ $(function() {
         return page + "?g=" + GroupCode;
     }
 
-
     // index.html
 
     //makes the group first
     $("#hungry-btn").on("click", function(event) {
-        if (!db) { // Joe: what is this?
+        if (!db) {
             return;
         }
 
@@ -41,6 +40,8 @@ $(function() {
 
         function goSearch() {
             $("#hungry-btn").text("Finding places near you...");
+            $("#hungry-btn").append('<div class="spinner-border text-light" '+
+                'role="status"><span class="visually-hidden">Loading...</span></div>');
 
             loadRestaurants(function(ok) {
                 if (!ok) {
@@ -49,6 +50,8 @@ $(function() {
                 }
 
                 $("#hungry-btn").text("Setting up your group...");
+                $("#hungry-btn").append('<div class="spinner-border text-light" '+
+                'role="status"><span class="visually-hidden">Loading...</span></div>');
 
                 createGroup(myName).then(function(code) {
                     if (!code) {
@@ -211,9 +214,9 @@ $(function() {
     // waiting.html
     //waits for the group
 
-    if ($("#waiting-spinner").length > 0) {
+    if ($("#waiting-spinner").length > 0) { // Joe: length of the waiting-spinner?
         if (inGroup) {
-            loadGroupPlaces(GroupCode).then(function() {
+            loadGroupPlaces(GroupCode).then(function() { // Joe: ?
                 let check = setInterval(function() {
                     everyoneIsDone(GroupCode).then(function(done) {
                         if (done) {
@@ -235,7 +238,7 @@ $(function() {
     //saves on change
 
     function flashSaved() {
-        $("#saved-note").removeClass("d-none");
+        $("#saved-note").removeClass("d-none"); // Joe: where is saved-note?
 
         setTimeout(function() {
             $("#saved-note").addClass("d-none");
@@ -245,7 +248,7 @@ $(function() {
     function showLocationStatus() {
         let settings = getSettings();
 
-        if (haveLocation()) {
+        if (haveLocation()) { // Joe: showing the location coordinates?
             $("#location-status").removeClass("text-secondary text-danger").addClass("text-success fw-bold")
                 .text("shared (" + settings.lat.toFixed(3) + ", " + settings.lon.toFixed(3) + ")");
             $("#use-location").text("Update my location");
@@ -256,7 +259,7 @@ $(function() {
         }
     }
 
-    if ($("#reset-settings").length > 0) {
+    if ($("#reset-settings").length > 0) { // Joe: length of the reset-settings button?
         let mine = getSettings();
         $("#distance-range-slider").val(mine.distanceMiles);
         $("#miles-bubble").text(mine.distanceMiles);
@@ -284,8 +287,10 @@ $(function() {
 
         $("#use-location").on("click", function() {
             $("#use-location").prop("disabled", true).text("Asking your browser...");
+            $("#use-location").append('<div class="spinner-border text-light" '+
+                'role="status"><span class="visually-hidden">Loading...</span></div>');
 
-            askForLocation(function(gotIt) {
+            askForLocation(function(gotIt) { // Joe: now I'm confused about the function being a paramter, and the paramter for that function
                 $("#use-location").prop("disabled", false);
                 showLocationStatus();
 

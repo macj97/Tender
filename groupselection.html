@@ -52,23 +52,14 @@
             <h2 class="my-auto mx-3 fw-bold text-start ">Tender</h2>
         </div>
 
-        <!-- settings icon dropdown -->
-        <div class="dropdown col-2">
-            
-            <!-- information icon, links back to index.html page -->
-            <a href="index.html" class="bi bi-info-circle fs-1 my-3 mx-2 float-end"></a>
+        <!-- settings and information icon dropdown -->
+        <!-- previous class for this div: <div class="dropdown col-2"> -->
+        <div class="col-4 col-md-2 d-flex justify-content-end align-items-center">
+            <!-- settings -->
+            <a href="settings.html" class="bi bi-gear fs-1 mx-2 text-dark"></a>
 
-            <!-- settings button -->
-            <i type="button" class="bi bi-gear fs-1 my-3 mx-2 float-end" data-bs-toggle="dropdown"></i>
-            
-            <ul class="dropdown-menu">
-                <li>
-                    <label for="distance-range-slider" class="form-label">
-                        <h5>Distance: <span id="distance-range-slider-num"></span> miles</h5></label>
-                    
-                    <input type="range" class="form-range" id="distance-range-slider" min="1" max="10">
-                </li>
-            </ul>
+            <!-- information icon -->
+            <a href="index.html" class="bi bi-info-circle fs-1 mx-2"></a>
         </div>
     </div>
 
