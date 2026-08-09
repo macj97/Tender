@@ -51,7 +51,7 @@ $(function() {
 
             loadRestaurants(function(ok) {
                 clearTimeout(loadMessage);
-                $("#loading-status").addClass("d-none");
+                $("#loading-message").addClass("d-none");
 
                 if (!ok) {
                     showProblem("Couldnt find anywhere near you, try a bigger distance.");
