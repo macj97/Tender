@@ -38,6 +38,14 @@ function loadRestaurants(whenDone) {
         return;
     }
 
+    // wait purposely to trigger loading-message, for testing
+    // let waitPurposely = setInterval(function () {
+    //     console.log("waiting purposely in loadRestaurants function...");
+    // }, 1000);
+    // setTimeout(function () {
+    //     clearInterval(waitPurposely);
+    // }, 10000);
+
     searchNearbyOSM(settings.lat, settings.lon, function (ok, elements) {
         if (!ok) {
             whenDone(false);
