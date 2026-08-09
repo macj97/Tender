@@ -39,8 +39,8 @@ $(function() {
         }
 
         function goSearch() {
-            $("#hungry-btn").text("Finding places near you...");
-            $("#hungry-btn").append('<div class="spinner-border text-light" '+
+            $("#hungry-btn").text(" Finding places near you...");
+            $("#hungry-btn").prepend('<div class="spinner-border text-light" '+
                 'role="status"><span class="visually-hidden">Loading...</span></div>');
 
             loadRestaurants(function(ok) {
@@ -49,8 +49,8 @@ $(function() {
                     return;
                 }
 
-                $("#hungry-btn").text("Setting up your group...");
-                $("#hungry-btn").append('<div class="spinner-border text-light" '+
+                $("#hungry-btn").text(" Setting up your group...");
+                $("#hungry-btn").prepend('<div class="spinner-border text-light" '+
                 'role="status"><span class="visually-hidden">Loading...</span></div>');
 
                 createGroup(myName).then(function(code) {
@@ -69,8 +69,8 @@ $(function() {
             return;
         }
 
-        $("#hungry-btn").text("Asking for your location...");
-        $("#hungry-btn").append('<div class="spinner-border text-light" '+
+        $("#hungry-btn").text(" Asking for your location...");
+        $("#hungry-btn").prepend('<div class="spinner-border text-light" '+
                 'role="status"><span class="visually-hidden">Loading...</span></div>');
 
         askForLocation(function(gotIt) {
@@ -289,9 +289,9 @@ $(function() {
         });
 
         $("#use-location").on("click", function() {
-            $("#use-location").prop("disabled", true).text("Asking your browser...");
-            $("#use-location").append('<div class="spinner-border text-light" '+
-                'role="status"><span class="visually-hidden">Loading...</span></div>');
+            $("#use-location").prop("disabled", true).text(" Asking your browser...");
+            $("#use-location").prepend('<div class="spinner-border text-light spinner-border-sm" '+
+                'role="status"><span class="visually-hidden"> Loading...</span></div>');
 
             askForLocation(function(gotIt) { 
                 $("#use-location").prop("disabled", false);
