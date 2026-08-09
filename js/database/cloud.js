@@ -3,15 +3,15 @@
 
 // the group code rides in the url like groupselection.html?g=k4f9x2
 function getGroupCode() {
-    return new URLSearchParams(window.location.search).get("g"); // Joe: ?
+    return new URLSearchParams(window.location.search).get("g");
 }
 
 function isCloudMode() {
-    if (!db) {
+    if (!db) { // if database set up
         return false;
     }
 
-    if (!getGroupCode()) { // Joe: why called again?
+    if (!getGroupCode()) { // getGroupCode() 
         return false;
     }
 
@@ -143,7 +143,7 @@ async function loadMembers(code) {
 
 
 // the list we froze when the group was made
-async function loadGroupPlaces(code) { // Joe: what does this function do?
+async function loadGroupPlaces(code) {
     let result = await db.from("places")
         .select("name, cuisine, hours, address, photo_ref")
         .eq("group_code", code)

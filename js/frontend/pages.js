@@ -2,8 +2,8 @@
 
 $(function() {
 
-    const GroupCode = getGroupCode();
-    const inGroup = isCloudMode();
+    const GroupCode = getGroupCode(); // string for part of page url, used for group code
+    const inGroup = isCloudMode(); // boolean for if user has invite code in URL, and datebase active
 
     function withCode(page) {
         if (!GroupCode) {
@@ -70,6 +70,8 @@ $(function() {
         }
 
         $("#hungry-btn").text("Asking for your location...");
+        $("#hungry-btn").append('<div class="spinner-border text-light" '+
+                'role="status"><span class="visually-hidden">Loading...</span></div>');
 
         askForLocation(function(gotIt) {
             if (!gotIt) {
@@ -81,13 +83,14 @@ $(function() {
         });
     });
 
-    //enter submits
+    //enter key submits
     $("#my-name").on("keypress", function(event) {
         if (event.which === 13) {
             $("#hungry-btn").trigger("click");
         }
     });
 
+    // join box for another user, on groupselection.html
     $("#join-name").on("keypress", function(event) {
         if (event.which === 13) {
             $("#join-btn").trigger("click");
@@ -172,7 +175,7 @@ $(function() {
         });
     }
 
-    if ($("#member-list").length > 0) {
+    if ($("#member-list").length > 0) { // if "members-list" element exists
         if (GroupCode) {
             $("#link").text(getInviteLink(GroupCode));
             $("#button").attr("href", withCode("card.html"));
@@ -214,9 +217,9 @@ $(function() {
     // waiting.html
     //waits for the group
 
-    if ($("#waiting-spinner").length > 0) { // Joe: length of the waiting-spinner?
+    if ($("#waiting-spinner").length > 0) { // Joe: if there is a spinner
         if (inGroup) {
-            loadGroupPlaces(GroupCode).then(function() { // Joe: ?
+            loadGroupPlaces(GroupCode).then(function() {
                 let check = setInterval(function() {
                     everyoneIsDone(GroupCode).then(function(done) {
                         if (done) {
@@ -259,7 +262,7 @@ $(function() {
         }
     }
 
-    if ($("#reset-settings").length > 0) { // Joe: length of the reset-settings button?
+    if ($("#reset-settings").length > 0) { // Joe: if reset-settings button exist
         let mine = getSettings();
         $("#distance-range-slider").val(mine.distanceMiles);
         $("#miles-bubble").text(mine.distanceMiles);
@@ -290,7 +293,7 @@ $(function() {
             $("#use-location").append('<div class="spinner-border text-light" '+
                 'role="status"><span class="visually-hidden">Loading...</span></div>');
 
-            askForLocation(function(gotIt) { // Joe: now I'm confused about the function being a paramter, and the paramter for that function
+            askForLocation(function(gotIt) { 
                 $("#use-location").prop("disabled", false);
                 showLocationStatus();
 

@@ -68,6 +68,7 @@ function searchKeyFor(lat, lon, miles) {
     return lat.toFixed(3) + ',' + lon.toFixed(3) + ',' + miles
 }
 
+// returns saved search only if same as the parameters, and less than 10 mins
 function getSavedSearch(lat, lon, miles) {
     let raw = localStorage.getItem(SEARCH_KEY)
 
@@ -81,7 +82,7 @@ function getSavedSearch(lat, lon, miles) {
         return null
     }
 
-    if (new Date().getTime() - saved.when > SEARCH_MINUTES * 60 * 1000) { // time limit?
+    if (new Date().getTime() - saved.when > SEARCH_MINUTES * 60 * 1000) { // 10-minute time limit
         return null
     }
 

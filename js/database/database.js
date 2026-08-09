@@ -71,7 +71,7 @@
                 }
             }
 
-                    if (likes > 0) {
+            if (likes > 0) {
                 matches.push({ Place: place, Likes: likes });
             }
         }

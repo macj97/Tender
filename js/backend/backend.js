@@ -74,7 +74,7 @@ function fillFromOSM(elements) {
     let seenNames = [];
 
     for (let i = 0; i < elements.length; i++) {
-        if (RestaurantInfo.length === 10) {
+        if (RestaurantInfo.length === 10) { // TO-DO: '10' should be a variable
             break;
         }
 
