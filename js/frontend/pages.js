@@ -43,12 +43,15 @@ $(function() {
             $("#hungry-btn").prepend('<div class="spinner-border text-light" '+
                 'role="status"><span class="visually-hidden">Loading...</span></div>');
 
+            // loading message if taking a while to load
+            $("#loading-message").text("");
             let loadMessage = setTimeout(function () {
-                alert("Still loading your restaurants, please wait another moment...");
+                $("#loading-message").text("Still loading your restaurants, please wait another moment...");
             }, 10000);
 
             loadRestaurants(function(ok) {
                 clearTimeout(loadMessage);
+                $("#loading-status").text("");
 
                 if (!ok) {
                     showProblem("Couldnt find anywhere near you, try a bigger distance.");
