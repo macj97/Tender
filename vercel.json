@@ -1,5 +1,5 @@
 {
-  "buildCommand": "sh scripts/make-config.sh",
+  "buildCommand": "echo \"const GOOGLE_PLACES_KEY = '$GOOGLE_PLACES_KEY';\" > js/database/google-config.js",
   "outputDirectory": ".",
   "framework": null
 }
