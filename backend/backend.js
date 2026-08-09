@@ -22,19 +22,10 @@ function osmAddress(tags) {
 }
 
 
-// the main overpass server goes down a lot so theres backups
-// "https://overpass-api.de/api/interpreter" was the first listed
-const OVERPASS_URLS = [
-    "https://overpass-api.de/api/interpreter",
-    "https://overpass.kumi.systems/api/interpreter",
-    "https://overpass.private.coffee/api/interpreter"
-];
+const OVERPASS_URL = "https://overpass-api.de/api/interpreter";
 
-function searchNearbyOSM(latitude, longitude, onDone, which) {
-    if (!which) {
-        which = 0;
-    }
-
+// goes and finds the restaurants near you
+function searchNearbyOSM(latitude, longitude, onDone) {
     let miles = getSettings().distanceMiles;
 
     // needs meters
@@ -45,9 +36,10 @@ function searchNearbyOSM(latitude, longitude, onDone, which) {
 
     $.ajax({
         type: "GET",
-        url: OVERPASS_URLS[which],
+        url: OVERPASS_URL,
         data: { data: query },
-        
+        timeout: 20000,
+
         success: function (result) {
             onDone(true, result.elements);
         },
@@ -67,7 +59,7 @@ function fillFromOSM(elements) {
     let seenNames = [];
 
     for (let i = 0; i < elements.length; i++) {
-        if (RestaurantInfo.length === 10) { // TO-DO: '10' should be a variable
+        if (RestaurantInfo.length === 10) {
             break;
         }
 

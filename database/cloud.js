@@ -8,11 +8,11 @@ function getGroupCode() {
 
 // are we in a group or on our own
 function isCloudMode() {
-    if (!db) { // if database set up
+    if (!db) {
         return false;
     }
 
-    if (!getGroupCode()) { // getGroupCode() 
+    if (!getGroupCode()) {
         return false;
     }
 
