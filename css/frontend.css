@@ -1,0 +1,115 @@
+/* makes the swipe animations smoother*/
+#restaurant-card {
+    transition: transform 0.7s ease, opacity 0.7s ease;
+}
+/*style for the like/dislike*/
+.swipe-badge {
+    position: absolute;
+    top: 20px;
+    padding: 8px 16px;
+    font-size: 28px;
+    font-weight: bold;
+    border: 3px solid;
+    border-radius: 10px;
+    opacity: 0;
+    z-index: 10;
+    background-color: white;
+}
+.like-badge {
+    right: 20px;
+    color: green;
+    border-color: green;
+    transform: rotate(15deg); /*positions the LIKE badge on the right*/
+}
+.dislike-badge {
+    left: 20px;
+    color: red;
+    border-color: red;
+    transform: rotate(-15deg); /*positions the NOPE badge on the left*/
+}
+#restaurant-card.show-like #like-badge {
+    opacity: 1; /*shows the LIKE badge*/
+}
+#restaurant-card.show-dislike #dislike-badge {
+    opacity: 1; /*shows the NOPE badge*/
+}
+#restaurant-card.swipe-right {
+    transform: translateX(140px) rotate(10deg); /*moves the card out to the right */
+    opacity: 0; 
+}
+#restaurant-card.swipe-left {
+    transform: translateX(-140px) rotate(-10deg); /* moves the card out to the left */
+    opacity: 0;
+}
+
+
+/* ===== added later ===== */
+
+/* transition was 0.7s, so fast taps got thrown away */
+#restaurant-card {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    max-width: 420px;
+}
+/* dont let the transition fight the finger while dragging */
+#restaurant-card.dragging {
+    transition: none;
+}
+/* some google names run to 4 lines and pushed the buttons off screen */
+.card-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-width: 0;
+}
+/* stops the photo making the card really tall */
+.card-img-top {
+    height: 180px;
+    object-fit: cover;
+}
+/* on a short screen the card was about 100px too tall */
+@media (max-height: 700px) {
+    .card-img-top {
+        height: 90px;
+    }
+    #restaurant-card .card-body {
+        padding: 10px;
+    }
+}
+/* flex wont shrink a child past its content without this */
+.result-text {
+    min-width: 0;
+}
+/* wrap instead of getting cut off, 2 lines max */
+.result-name {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+/* top 3 get a box, strongest for the winner then fading out */
+.result-1 {
+    background-color: #dc3545;
+    color: #ffffff;
+}
+.result-2 {
+    background-color: #f2b8bd;
+}
+.result-3 {
+    background-color: #fae1e3;
+}
+/* the outlined button and the grey text vanish on the red row */
+.result-1 .btn {
+    background-color: #ffffff;
+}
+.result-1 .text-secondary {
+    color: #ffffff !important;
+}
+/* red like the rest of the app instead of bootstrap blue */
+.form-check-input:checked {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+.form-range::-webkit-slider-thumb {
+    background-color: #dc3545;
+}
