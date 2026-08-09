@@ -4,9 +4,17 @@
 
     // placeholder votes for the other 3 people
     let OtherPeopleVotes = [
-        { Member: "Joseph", Liked: ["Panera Bread", "McDonald's"] },
-        { Member: "Riley", Liked: ["McDonald's", "Applebee's"] },
-        { Member: "Hilary", Liked: ["McDonald's"] }
+        { Member: "Joseph", Liked: ["Dunkin'", "Subway", "Starbucks"] },
+        { Member: "Riley", Liked: ["Subway", "Dunkin'"] },
+        { Member: "Hilary", Liked: ["Subway", "Chipotle"] }
+    ];
+
+    // the members list on groupselection.html gets built from this
+    let GroupMembers = [
+        { Name: "You", Joined: true },
+        { Name: "Joseph", Joined: true },
+        { Name: "Riley", Joined: false },
+        { Name: "Hilary", Joined: true }
     ];
 
     function saveLike(name) {

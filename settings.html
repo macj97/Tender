@@ -15,7 +15,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
-
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
@@ -26,6 +25,7 @@
     <!-- Frontend -->
     <link rel="stylesheet" href="css/frontend.css">
 
+    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script defer src="js/database/supabase-config.js"></script>
     <script defer src="js/database/cloud.js"></script>
@@ -52,33 +52,47 @@
             <h2 class="my-auto mx-3 fw-bold text-start">Tender</h2>
         </a>
 
-        <!-- settings icon -->
         <div class="col-4 col-md-2 d-flex justify-content-end align-items-center">
-            <a href="settings.html" class="bi bi-gear fs-1 mx-2 text-dark"></a>
-
-            <!-- information icon, links back to index.html page -->
+            <!-- gear, filled in -->
+            <i class="bi bi-gear-fill fs-1 mx-2 text-danger"></i>
             <a href="index.html" class="bi bi-info-circle fs-1 mx-2"></a>
         </div>
     </div>
 
-    <div class="row my-md-5 my-1">
-        <div class="container col-11 col-md-6 col-lg-4 mx-auto">
-            <p class="fs-2 fw-bold mt-3">Results</p>
-            <p class="text-body-tertiary mt-1 mb-md-5">Here's what you agreed upon, most liked first</p>
+    <div class="row my-3">
+        <div class="container col-11 col-md-8 col-lg-5 mx-auto">
 
-        </div>
+            <p class="fs-2 fw-bold mb-3">Settings</p>
 
-        <div class="container col-11 col-md-10 mx-auto my-md-5 my-3">
-            <!--frontend.js fills these in from the votes-->
-            <ul class="list-group" id="results-list"></ul>
-        </div>
+            <!-- location -->
+            <p class="fs-4 fw-bold mb-1">Your location</p>
+            <p class="text-secondary">Tender needs this to find places near you.</p>
 
-    </div>
+            <p><span class="fw-bold">Right now:</span>
+                <span id="location-status" class="text-secondary">checking...</span></p>
 
-    <div class="row mb-4">
-        <div class="container col-11 col-md-6 col-lg-4 mx-auto">
-            <a id="button" class="btn fw-bold fs-5 text-white bg-danger rounded-3 w-100"
-                href="index.html">Start over</a>
+            <button id="use-location" type="button" class="btn fw-bold text-white bg-danger">
+                Share my location
+            </button>
+
+            <hr class="my-3">
+
+            <!-- radius -->
+            <p class="fs-4 fw-bold mb-1">How far you'll go: <span id="miles-bubble">5</span> miles</p>
+            <p class="text-secondary">Anything further away than this wont show up.</p>
+
+            <!-- 30 mile max -->
+            <input type="range" class="form-range" id="distance-range-slider"
+                min="1" max="30" step="1" value="5">
+            <div class="d-flex justify-content-between text-secondary">
+                <span>1 mile</span>
+                <span>30 miles</span>
+            </div>
+            
+            <button id="reset-settings" type="button" class="btn btn-outline-secondary fw-bold">
+                Reset settings
+            </button>
+
         </div>
     </div>
 
