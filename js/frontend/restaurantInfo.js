@@ -1,6 +1,6 @@
 // To be used to store the information gathered about restaurants
 // I created these 3 just to see if the swipping animation works
-// still to do: dietary, delivery, menu link
+// still to do: dietary, delivery, menu link (Version-2)
 let RestaurantInfo = [];
 
 function addRestaurant(name, image, cuisine, hours, address) {
@@ -38,14 +38,6 @@ function loadRestaurants(whenDone) {
         return;
     }
 
-    // wait purposely to trigger loading-message, for testing
-    // let waitPurposely = setInterval(function () {
-    //     console.log("waiting purposely in loadRestaurants function...");
-    // }, 1000);
-    // setTimeout(function () {
-    //     clearInterval(waitPurposely);
-    // }, 10000);
-
     searchNearbyOSM(settings.lat, settings.lon, function (ok, elements) {
         if (!ok) {
             whenDone(false);
@@ -65,7 +57,6 @@ function loadRestaurants(whenDone) {
         });
     });
 }
-
 
 // keeps the last search
 const SEARCH_KEY = 'tenderLastSearch'

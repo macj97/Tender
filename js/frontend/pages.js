@@ -234,7 +234,7 @@ $(function() {
     // waiting.html
     //waits for the group
 
-    if ($("#waiting-spinner").length > 0) { // Joe: if there is a spinner
+    if ($("#waiting-spinner").length > 0) { // if there is a spinner
         if (inGroup) {
             loadGroupPlaces(GroupCode).then(function() {
                 let check = setInterval(function() {
@@ -281,7 +281,7 @@ $(function() {
         }
     }
 
-    if ($("#reset-settings").length > 0) { // Joe: if reset-settings button exist
+    if ($("#reset-settings").length > 0) { // if reset-settings button exist
         let mine = getSettings();
         $("#distance-range-slider").val(mine.distanceMiles);
         $("#miles-bubble").text(mine.distanceMiles);

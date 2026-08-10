@@ -75,7 +75,7 @@ function fillFromOSM(elements) {
     let seenNames = [];
 
     for (let i = 0; i < elements.length; i++) {
-        if (RestaurantInfo.length === 10) { // '10' can be variable in settings for version-2
+        if (RestaurantInfo.length === 10) { // '10' can be variable in settings (Version-2)
             break;
         }
 
