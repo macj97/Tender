@@ -66,7 +66,7 @@ $(function() {
                 $("#loading-message").text("").addClass("d-none");;
 
                 if (!ok) {
-                    showProblem("Couldnt find anywhere near you, try a bigger distance.");
+                    showProblem("Could not connect to server, try again.");
                     return;
                 }
 
@@ -266,11 +266,13 @@ $(function() {
     let savedTimer = 0;
 
     function flashSaved() {
-        $("#saved-note").text("Settings have been saved.").removeClass("d-none"); // Joe: where is saved-note?
+        $("#saved-note").text("Settings have been saved.").removeClass("d-none");
+        $("#saved-note-spinner").addClass("d-none");
 
         clearTimeout(savedTimer);
         savedTimer = setTimeout(function () {
             $("#saved-note").addClass("d-none");
+            $("#saved-note-spinner").addClass("d-none");
         }, 2500);
     }
 
@@ -278,6 +280,7 @@ $(function() {
     function showNote(message) {
         clearTimeout(savedTimer);
         $("#saved-note").text(message).removeClass("d-none");
+        $("#saved-note-spinner").removeClass("d-none");
     }
 
     // shows if youve shared your locaton
@@ -352,7 +355,7 @@ $(function() {
 
             groupTimer = setTimeout(function () {
                 setGroupDistance(myGroup, getSettings().distanceMiles);
-                showNote("Finding places for your group...");
+                showNote("Updating distance for your group, please wait...");
 
                 loadRestaurants(function (ok) {
                     if (!ok) {
