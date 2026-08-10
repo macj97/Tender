@@ -49,14 +49,13 @@ $(function() {
                 $("#loading-message").removeClass("d-none");
             }, 10000);
             let loadMessage2 = setTimeout(function () {
-                $("#loading-message").removeClass("d-none");
-                $("#loading-message").text("Taking longer than expected...");
+                $("#loading-message").text("Taking longer than expected, please wait another moment...");
             }, 30000);
 
             loadRestaurants(function(ok) {
                 clearTimeout(loadMessage);
                 clearTimeout(loadMessage2);
-                $("#loading-message").text("").addClass("d-none");
+                $("#loading-message").text("").addClass("d-none");;
 
                 if (!ok) {
                     showProblem("Couldnt find anywhere near you, try a bigger distance.");
