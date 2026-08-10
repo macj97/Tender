@@ -6,6 +6,7 @@ function getGroupCode() {
     return new URLSearchParams(window.location.search).get("g");
 }
 
+//are we in a group or on our own
 function isCloudMode() {
     if (!db) { // if database set up
         return false;
@@ -23,10 +24,12 @@ function makeCode() {
     return Math.random().toString(36).slice(2, 8);
 }
 
+//which person in the group am i
 function getMyMemberId(code) {
     return localStorage.getItem("tenderMember_" + code);
 }
 
+//remembers which person in the group i am
 function setMyMemberId(code, id) {
     localStorage.setItem("tenderMember_" + code, id);
 }
@@ -43,6 +46,7 @@ function getInviteLink(code) {
 
 
 // pulls the photo name back out of a url
+// AI used for keeping just the picture name instead of the whole link
 function photoRefFromUrl(url) {
     if (!url) {
         return "";
@@ -132,6 +136,7 @@ async function joinGroup(code, name) {
 }
 
 
+// gets everybody in the group
 async function loadMembers(code) {
     let result = await db.from("members")
         .select("id, name, joined")
@@ -143,6 +148,7 @@ async function loadMembers(code) {
 
 
 // the list we froze when the group was made
+// AI used for getting that list back out again for everyone else
 async function loadGroupPlaces(code) {
     let result = await db.from("places")
         .select("name, cuisine, hours, address, photo_ref")
@@ -197,7 +203,7 @@ async function saveVote(code, placeName, liked) {
 }
 
 
-// for the Back button
+//for the back button
 async function deleteVote(code, placeName) {
     let memberId = getMyMemberId(code);
 
@@ -213,6 +219,7 @@ async function deleteVote(code, placeName) {
 }
 
 
+//gets all the votes for the group
 async function loadVotes(code) {
     let result = await db.from("votes")
         .select("member_id, place_name, liked")
@@ -222,7 +229,7 @@ async function loadVotes(code) {
 }
 
 
-// counts the real votes
+//counts the real votes
 async function getCloudMatches(code) {
     let votes = await loadVotes(code);
     let matches = [];
@@ -264,6 +271,7 @@ async function everyoneIsDone(code) {
 
 
 // realtime, so the members list updates without a refresh
+// AI used for getting the members list to update on its own without a refresh
 function watchMembers(code, onChange) {
     db.channel("members-" + code)
         .on("postgres_changes",

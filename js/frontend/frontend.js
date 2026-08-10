@@ -13,6 +13,7 @@ $(function() {
         return page + "?g=" + GroupCode;
     }
 
+    //makes the picture bit of the card
     function cardImage(restaurant) {
         return '<img class="card-img-top" draggable="false" src="'+restaurant.image+
             '" alt="Card image">';

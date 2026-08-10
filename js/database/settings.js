@@ -2,6 +2,7 @@
 
 const SETTINGS_KEY = "tenderSettings";
 
+// the settings you start with, 5 miles and no location
 function defaultSettings() {
     return {
         distanceMiles: 5,
@@ -11,6 +12,7 @@ function defaultSettings() {
 }
 
 
+//gets your saved settings back
 function getSettings() {
     let saved = localStorage.getItem(SETTINGS_KEY);
 
@@ -22,11 +24,13 @@ function getSettings() {
 }
 
 
+// saves your settings
 function saveSettings(settings) {
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
 }
 
 
+//wipes your settings, for the reset button
 function clearSettings() {
     localStorage.removeItem(SETTINGS_KEY);
 }

@@ -5,6 +5,7 @@ $(function() {
     const GroupCode = getGroupCode(); // string for part of page url, used for group code
     const inGroup = isCloudMode(); // boolean for if user has invite code in URL, and datebase active
 
+    // keeps the group code on the link
     function withCode(page) {
         if (!GroupCode) {
             return page;
@@ -33,11 +34,13 @@ $(function() {
 
         $("#name-error").addClass("d-none");
 
+        //shows an error under the name box
         function showProblem(message) {
             $("#name-error").text(message).removeClass("d-none");
             $("#hungry-btn").text("I'm hungry");
         }
 
+        // finds the places then makes the group
         function goSearch() {
             $("#hungry-btn").text(" Finding places near you...");
             $("#hungry-btn").prepend('<div class="spinner-border text-light" '+
@@ -133,6 +136,7 @@ $(function() {
         drawMembers(people);
     }
 
+    //draws the list of poeple
     function drawMembers(people) {
         $("#member-list").empty();
 
@@ -253,6 +257,7 @@ $(function() {
     // settings.html
     //saves on change
 
+    //shows the saved message for a second
     function flashSaved() {
         $("#saved-note").removeClass("d-none"); // Joe: where is saved-note?
 
@@ -261,6 +266,7 @@ $(function() {
         }, 1500);
     }
 
+    // shows if youve shared your locaton
     function showLocationStatus() {
         let settings = getSettings();
 

@@ -12,6 +12,8 @@ function photoUrl(photoName, width) {
 }
 
 
+// finds a picture for one restaurant
+// AI used for asking google for only the photo and nothing else
 function findPhoto(name, address, onDone) {
     if (!GOOGLE_PLACES_KEY) {
         onDone("");
@@ -63,6 +65,8 @@ function findPhoto(name, address, onDone) {
 }
 
 
+// puts a picture on every restaurant
+// AI used for waiting until every picture comes back before carrying on
 function addPhotos(whenDone) {
     let waiting = RestaurantInfo.length;
 

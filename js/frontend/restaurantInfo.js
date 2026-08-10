@@ -97,6 +97,7 @@ function getSavedSearch(lat, lon, miles) {
     return saved
 }
 
+// keeps the last search so we dont look it up agian
 function saveSearch(lat, lon, miles, places) {
     localStorage.setItem(SEARCH_KEY, JSON.stringify({
         key: searchKeyFor(lat, lon, miles),
