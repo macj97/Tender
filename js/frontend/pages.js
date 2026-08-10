@@ -50,11 +50,11 @@ $(function() {
             }, 10000);
             let loadMessage2 = setTimeout(function () {
                 $("#loading-message").text("Taking longer than expected, please wait another moment...");
-            }, 10000);
+            }, 30000);
 
             loadRestaurants(function(ok) {
                 clearTimeout(loadMessage);
-                clearTimeout(loadMessage);
+                clearTimeout(loadMessage2);
                 $("#loading-message").text("").addClass("d-none");;
 
                 if (!ok) {
