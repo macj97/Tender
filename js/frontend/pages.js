@@ -5,6 +5,11 @@ $(function() {
     const GroupCode = getGroupCode(); // string for part of page url, used for group code
     const inGroup = isCloudMode(); // boolean for if user has invite code in URL, and datebase active
 
+    // keep the code for settings later
+    if (GroupCode) {
+        setLastGroup(GroupCode);
+    }
+
     // keeps the group code on the link
     function withCode(page) {
         if (!GroupCode) {
@@ -257,13 +262,22 @@ $(function() {
     // settings.html
     //saves on change
 
-    //shows the saved message for a second
-    function flashSaved() {
-        $("#saved-note").removeClass("d-none"); // Joe: where is saved-note?
+    //shows the saved message for a couple seconds
+    let savedTimer = 0;
 
-        setTimeout(function() {
+    function flashSaved() {
+        $("#saved-note").text("Settings have been saved.").removeClass("d-none"); // Joe: where is saved-note?
+
+        clearTimeout(savedTimer);
+        savedTimer = setTimeout(function () {
             $("#saved-note").addClass("d-none");
-        }, 1500);
+        }, 2500);
+    }
+
+    // same spot but it stays up, for while the group search is running
+    function showNote(message) {
+        clearTimeout(savedTimer);
+        $("#saved-note").text(message).removeClass("d-none");
     }
 
     // shows if youve shared your locaton
@@ -287,6 +301,78 @@ $(function() {
         $("#miles-bubble").text(mine.distanceMiles);
         showLocationStatus();
 
+        // work out where back should take you
+        let myGroup = GroupCode;
+        let cameFrom = document.referrer;
+
+        if (!myGroup) {
+            myGroup = getLastGroup();
+        }
+
+        if (myGroup) {
+            $("#back-btn").removeClass("btn-outline-secondary").addClass("text-white bg-danger");
+
+            if (cameFrom.indexOf("card.html") > -1) {
+                $("#back-btn").text("Back to swiping");
+            } else {
+                $("#back-btn").text("Back to group selection");
+            }
+        }
+
+        $("#back-btn").on("click", function () {
+            if (!myGroup) {
+                history.back();
+                return;
+            }
+
+            if (cameFrom.indexOf("card.html") > -1) {
+                window.location.href = "card.html?g=" + myGroup;
+            } else {
+                window.location.href = "groupselection.html?g=" + myGroup;
+            }
+        });
+
+        // only the person who made the group can change what it searches
+        let iAmOwner = false;
+        let groupTimer = 0;
+
+        if (myGroup && db) {
+            isGroupOwner(myGroup).then(function (owner) {
+                iAmOwner = owner;
+            });
+        }
+
+        // waits till youve stopped sliding, then redoes the search for everyone
+        function pushRadiusToGroup() {
+            clearTimeout(groupTimer);
+
+            if (!iAmOwner) {
+                return;
+            }
+
+            groupTimer = setTimeout(function () {
+                setGroupDistance(myGroup, getSettings().distanceMiles);
+                showNote("Finding places for your group...");
+
+                loadRestaurants(function (ok) {
+                    if (!ok) {
+                        showNote("Couldnt find anywhere, try a bigger distance");
+                        return;
+                    }
+
+                    replaceGroupPlaces(myGroup).then(function (done) {
+                        if (!done) {
+                            showNote("That didnt work, try again");
+                            return;
+                        }
+
+                        clearGroupVotes(myGroup);
+                        flashSaved();
+                    });
+                });
+            }, 300);
+        }
+
         //input, not click
         $("#distance-range-slider").on("input", function() {
             let settings = getSettings();
@@ -295,6 +381,7 @@ $(function() {
 
             $("#miles-bubble").text(settings.distanceMiles);
             flashSaved();
+            pushRadiusToGroup();
         });
 
         $("#reset-settings").on("click", function() {
@@ -305,6 +392,7 @@ $(function() {
             $("#miles-bubble").text(fresh.distanceMiles);
             showLocationStatus();
             flashSaved();
+            pushRadiusToGroup();
         });
 
         $("#use-location").on("click", function() {

@@ -34,6 +34,16 @@ function setMyMemberId(code, id) {
     localStorage.setItem("tenderMember_" + code, id);
 }
 
+// save the code so i can get it back on settings, the url doesnt always have it
+function setLastGroup(code) {
+    localStorage.setItem("tenderLastGroup", code);
+}
+
+// gets it back out
+function getLastGroup() {
+    return localStorage.getItem("tenderLastGroup");
+}
+
 // the url for the invite box
 function getInviteLink(code) {
     let path = window.location.pathname;
@@ -116,6 +126,61 @@ async function getGroupDistance(code) {
     let result = await db.from("groups").select("distance_miles").eq("code", code).single();
 
     return result.data.distance_miles;
+}
+
+
+// puts the new radius on the group
+async function setGroupDistance(code, miles) {
+    await db.from("groups").update({ distance_miles: miles }).eq("code", code);
+}
+
+
+// whoever joined first is the one who made it
+async function isGroupOwner(code) {
+    let rows = await loadMembers(code);
+
+    if (!rows || rows.length === 0) {
+        return false;
+    }
+
+    return rows[0].id === getMyMemberId(code);
+}
+
+
+// chucks the old resturants out and puts the new search in
+async function replaceGroupPlaces(code) {
+    if (RestaurantInfo.length === 0) {
+        return false;
+    }
+
+    // build the new list first
+    let rows = [];
+
+    for (let i = 0; i < RestaurantInfo.length; i++) {
+        let place = RestaurantInfo[i];
+
+        rows.push({
+            group_code: code,
+            position: i,
+            name: place.Name,
+            cuisine: place.Cuisine,
+            hours: place.Hours,
+            address: place.Address,
+            photo_ref: photoRefFromUrl(place.image)
+        });
+    }
+
+    await db.from("places").delete().eq("group_code", code);
+
+    let put = await db.from("places").insert(rows);
+
+    return !put.error;
+}
+
+
+// these are for places that arent in the list anymore so they have to go
+async function clearGroupVotes(code) {
+    await db.from("votes").delete().eq("group_code", code);
 }
 
 
