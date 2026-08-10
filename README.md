@@ -41,7 +41,11 @@ and updates each restaurant entry with a photo once all image requests are compl
 
 ## How to Run the App
 
-- Clone the project files.
+- Clone the repository or download the Zip file.
+- Run the project on a private server environment
+- Do not open the HTML files directly in the browser because some features require server permissions.
+- Make sure the required API and database configuration files are set up.
+- Start the App.
 
 ## How to Use the App
 
