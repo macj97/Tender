@@ -313,7 +313,7 @@ $(function() {
 
             loadRestaurants(function(ok) {
                 if (!ok) {
-                    showCardMessage("Couldnt find anywhere",
+                    showCardMessage("Couldn't find anywhere",
                         "Check your location is on and try turning the distance up.",
                         "Open settings", "settings.html");
                     return;

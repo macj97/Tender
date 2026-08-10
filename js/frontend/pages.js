@@ -44,14 +44,18 @@ $(function() {
                 'role="status"><span class="visually-hidden">Loading...</span></div>');
 
             // loading message if taking a while to load
-            $("#loading-message").text("");
+            $("#loading-message").text("").removeClass("d-none");
             let loadMessage = setTimeout(function () {
                 $("#loading-message").text("Still loading your restaurants, please wait another moment...");
+            }, 10000);
+            let loadMessage2 = setTimeout(function () {
+                $("#loading-message").text("Taking longer than expected, please wait another moment...");
             }, 10000);
 
             loadRestaurants(function(ok) {
                 clearTimeout(loadMessage);
-                $("#loading-message").text("");
+                clearTimeout(loadMessage);
+                $("#loading-message").text("").addClass("d-none");;
 
                 if (!ok) {
                     showProblem("Couldnt find anywhere near you, try a bigger distance.");
@@ -64,7 +68,7 @@ $(function() {
 
                 createGroup(myName).then(function(code) {
                     if (!code) {
-                        showProblem("Couldnt set up the group, try again.");
+                        showProblem("Couldn't set up the group, try again.");
                         return;
                     }
 
@@ -311,7 +315,7 @@ $(function() {
                 } else {
                     $("#location-status").removeClass("text-secondary text-success fw-bold")
                         .addClass("text-danger")
-                        .text("couldnt get it, Tender cant find places without it");
+                        .text("couldn't get it, Tender cant find places without it");
                 }
             });
         });
