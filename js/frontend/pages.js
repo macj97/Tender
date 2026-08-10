@@ -44,18 +44,19 @@ $(function() {
                 'role="status"><span class="visually-hidden">Loading...</span></div>');
 
             // loading message if taking a while to load
-            $("#loading-message").text("").removeClass("d-none");
+            $("#loading-message").text("").addClass("d-none");
             let loadMessage = setTimeout(function () {
                 $("#loading-message").removeClass("d-none");
             }, 10000);
             let loadMessage2 = setTimeout(function () {
-                $("#loading-message").text("Taking longer than expected, please wait another moment...");
-            }, 10000);
+                $("#loading-message").removeClass("d-none");
+                $("#loading-message").text("Taking longer than expected...");
+            }, 30000);
 
             loadRestaurants(function(ok) {
                 clearTimeout(loadMessage);
-                clearTimeout(loadMessage);
-                $("#loading-message").text("").addClass("d-none");;
+                clearTimeout(loadMessage2);
+                $("#loading-message").text("").addClass("d-none");
 
                 if (!ok) {
                     showProblem("Couldnt find anywhere near you, try a bigger distance.");
