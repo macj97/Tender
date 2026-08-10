@@ -2,8 +2,10 @@
 
 const PLACES_TEXT_URL = "https://places.googleapis.com/v1/places:searchText";
 
+const MAX_BIAS_METRES = 50000;
 
-// makes the link for a restaurant picture
+
+// photos
 function photoUrl(photoName, width) {
     return "https://places.googleapis.com/v1/" + photoName +
         "/media?maxWidthPx=" + width + "&key=" + GOOGLE_PLACES_KEY;
@@ -11,12 +13,20 @@ function photoUrl(photoName, width) {
 
 
 // finds a picture for one restaurant
-// AI: used AI to work out how to ask google for only the photo and nothing else
+// AI used for asking google for only the photo and nothing else
 function findPhoto(name, address, onDone) {
+    if (!GOOGLE_PLACES_KEY) {
+        onDone("");
+        return;
+    }
+
     let me = getSettings();
 
     // needs meters
     let metres = me.distanceMiles * 1609;
+    if (metres > MAX_BIAS_METRES) {
+        metres = MAX_BIAS_METRES;
+    }
 
     $.ajax({
         type: "POST",
@@ -56,15 +66,16 @@ function findPhoto(name, address, onDone) {
 
 
 // puts a picture on every restaurant
+// AI used for waiting until every picture comes back before carrying on
 function addPhotos(whenDone) {
-    let i = 0;
+    let waiting = RestaurantInfo.length;
 
-    function doNext() {
-        if (i >= RestaurantInfo.length) {
-            whenDone();
-            return;
-        }
+    if (waiting === 0) {
+        whenDone();
+        return;
+    }
 
+    for (let i = 0; i < RestaurantInfo.length; i++) {
         let restaurant = RestaurantInfo[i];
 
         findPhoto(restaurant.Name, restaurant.Address, function (url) {
@@ -72,10 +83,11 @@ function addPhotos(whenDone) {
                 restaurant.image = url;
             }
 
-            i = i + 1;
-            doNext();
+            waiting = waiting - 1;
+
+            if (waiting === 0) {
+                whenDone();
+            }
         });
     }
-
-    doNext();
 }

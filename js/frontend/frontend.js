@@ -1,9 +1,10 @@
 $(function() {
 
+    //the ?g= code off the url
     const GroupCode = getGroupCode();
     const inGroup = isCloudMode();
 
-    // keeps the group code on the link
+    //keeps the group code on the url
     function withCode(page) {
         if (!GroupCode) {
             return page;
@@ -12,13 +13,13 @@ $(function() {
         return page + "?g=" + GroupCode;
     }
 
-    // makes the picture bit of the card
+    //makes the picture bit of the card
     function cardImage(restaurant) {
         return '<img class="card-img-top" draggable="false" src="'+restaurant.image+
             '" alt="Card image">';
     }
 
-    // shows a message instead of a card
+    //message where the card goes
     function showCardMessage(title, text, linkText, linkHref) {
         $("#card-root").html('<div class="row"><div class="card col-11 col-md-8 col-lg-5 m-auto">'+
             '<div class="card-body text-center">'+

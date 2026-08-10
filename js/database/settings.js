@@ -12,7 +12,7 @@ function defaultSettings() {
 }
 
 
-// gets your saved settings back
+//gets your saved settings back
 function getSettings() {
     let saved = localStorage.getItem(SETTINGS_KEY);
 
@@ -30,20 +30,20 @@ function saveSettings(settings) {
 }
 
 
-// wipes your settings, for the reset button
+//wipes your settings, for the reset button
 function clearSettings() {
     localStorage.removeItem(SETTINGS_KEY);
 }
 
 
-// have we got your location yet
+// have we got a location
 function haveLocation() {
     let s = getSettings();
     return s.lat !== null && s.lon !== null;
 }
 
 
-// asks the browser where you are
+// asks the browser for the location
 function askForLocation(onDone) {
     if (!navigator.geolocation) {
         onDone(false);

@@ -34,7 +34,7 @@ $(function() {
 
         $("#name-error").addClass("d-none");
 
-        // shows an error under the name box
+        //shows an error under the name box
         function showProblem(message) {
             $("#name-error").text(message).removeClass("d-none");
             $("#hungry-btn").text("I'm hungry");
@@ -112,7 +112,7 @@ $(function() {
 
     // groupselection.html
 
-    // gets the list of people in the group
+    //the members list
     function showMembers() {
         let people = GroupMembers;
 
@@ -132,7 +132,7 @@ $(function() {
         drawMembers(people);
     }
 
-    // draws the list of people
+    //draws the list of poeple
     function drawMembers(people) {
         $("#member-list").empty();
 
@@ -159,7 +159,7 @@ $(function() {
         }
     }
 
-    // asks a new person for their name
+    //new person off an invite link
     function showJoinBox() {
         let joinModal = new bootstrap.Modal(document.getElementById("join-modal"), {
             backdrop: "static",
@@ -253,7 +253,7 @@ $(function() {
     // settings.html
     //saves on change
 
-    // shows the saved message for a second
+    //shows the saved message for a second
     function flashSaved() {
         $("#saved-note").removeClass("d-none"); // Joe: where is saved-note?
 
@@ -262,7 +262,7 @@ $(function() {
         }, 1500);
     }
 
-    // shows if youve shared your location
+    // shows if youve shared your locaton
     function showLocationStatus() {
         let settings = getSettings();
 

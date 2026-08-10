@@ -1,12 +1,12 @@
 // everything that talks to supabase
 
 
-// gets the group code off the end of the address
+// the group code rides in the url like groupselection.html?g=k4f9x2
 function getGroupCode() {
     return new URLSearchParams(window.location.search).get("g");
 }
 
-// are we in a group or on our own
+//are we in a group or on our own
 function isCloudMode() {
     if (!db) { // if database set up
         return false;
@@ -19,22 +19,22 @@ function isCloudMode() {
     return true;
 }
 
-// makes a random code for a new group
+// 6 random letters and numbers
 function makeCode() {
     return Math.random().toString(36).slice(2, 8);
 }
 
-// which person in the group am i
+//which person in the group am i
 function getMyMemberId(code) {
     return localStorage.getItem("tenderMember_" + code);
 }
 
-// remembers which person in the group i am
+//remembers which person in the group i am
 function setMyMemberId(code, id) {
     localStorage.setItem("tenderMember_" + code, id);
 }
 
-// makes the invite link you send your friends
+// the url for the invite box
 function getInviteLink(code) {
     let path = window.location.pathname;
 
@@ -45,8 +45,25 @@ function getInviteLink(code) {
 }
 
 
-// makes a new group and saves the restaurant list for it
-// AI: used AI to help me work out how to copy the restaurant list onto the group when its made
+// pulls the photo name back out of a url
+// AI used for keeping just the picture name instead of the whole link
+function photoRefFromUrl(url) {
+    if (!url) {
+        return "";
+    }
+
+    let start = url.indexOf("/v1/");
+    let end = url.indexOf("/media");
+
+    if (start === -1 || end === -1) {
+        return "";
+    }
+
+    return url.slice(start + 4, end);
+}
+
+
+// makes the group, adds me, and freezes the restaurant list
 async function createGroup(myName) {
     let code = makeCode();
 
@@ -83,7 +100,8 @@ async function createGroup(myName) {
             cuisine: place.Cuisine,
             hours: place.Hours,
             address: place.Address,
-            photo_ref: place.image
+            // the name not the url, the url has our key on it
+            photo_ref: photoRefFromUrl(place.image)
         });
     }
 
@@ -93,7 +111,7 @@ async function createGroup(myName) {
 }
 
 
-// how far the group is searching
+// what radius this group was searched with
 async function getGroupDistance(code) {
     let result = await db.from("groups").select("distance_miles").eq("code", code).single();
 
@@ -101,7 +119,7 @@ async function getGroupDistance(code) {
 }
 
 
-// adds somebody to the group
+// somebody opened the invite link, add them to the group
 async function joinGroup(code, name) {
     let me = await db.from("members")
         .insert({ group_code: code, name: name, joined: true })
@@ -129,7 +147,8 @@ async function loadMembers(code) {
 }
 
 
-// gets the groups restaurant list back
+// the list we froze when the group was made
+// AI used for getting that list back out again for everyone else
 async function loadGroupPlaces(code) {
     let result = await db.from("places")
         .select("name, cuisine, hours, address, photo_ref")
@@ -154,9 +173,10 @@ async function loadGroupPlaces(code) {
 
         seenNames.push(row.name);
 
+        // rebuild the url with our own key
         let image = "data/no-image-available.jpeg";
         if (row.photo_ref) {
-            image = row.photo_ref;
+            image = photoUrl(row.photo_ref, 600);
         }
 
         addRestaurant(row.name, image, row.cuisine, row.hours, row.address);
@@ -166,7 +186,7 @@ async function loadGroupPlaces(code) {
 }
 
 
-// saves a like or a pass
+// upsert so a second Like doesnt blow up on the primary key
 async function saveVote(code, placeName, liked) {
     let memberId = getMyMemberId(code);
 
@@ -183,7 +203,7 @@ async function saveVote(code, placeName, liked) {
 }
 
 
-// takes a vote back off, for the back button
+//for the back button
 async function deleteVote(code, placeName) {
     let memberId = getMyMemberId(code);
 
@@ -199,7 +219,7 @@ async function deleteVote(code, placeName) {
 }
 
 
-// gets all the votes for the group
+//gets all the votes for the group
 async function loadVotes(code) {
     let result = await db.from("votes")
         .select("member_id, place_name, liked")
@@ -209,7 +229,7 @@ async function loadVotes(code) {
 }
 
 
-// counts the likes and puts the best one first
+//counts the real votes
 async function getCloudMatches(code) {
     let votes = await loadVotes(code);
     let matches = [];
@@ -237,7 +257,7 @@ async function getCloudMatches(code) {
 }
 
 
-// has everybody finished swiping yet
+// has everybody finished?
 async function everyoneIsDone(code) {
     let members = await loadMembers(code);
     let votes = await loadVotes(code);
@@ -250,8 +270,8 @@ async function everyoneIsDone(code) {
 }
 
 
-// keeps the list of people up to date
-// AI: used AI to get the members list updating on its own without a refresh
+// realtime, so the members list updates without a refresh
+// AI used for getting the members list to update on its own without a refresh
 function watchMembers(code, onChange) {
     db.channel("members-" + code)
         .on("postgres_changes",

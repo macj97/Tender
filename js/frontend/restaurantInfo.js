@@ -14,7 +14,7 @@ function addRestaurant(name, image, cuisine, hours, address) {
 }
 
 
-// finds the restaurants near you and puts pictures on them
+// Fills RestaurantInfo from openstreetmap
 function loadRestaurants(whenDone) {
     if (!haveLocation()) {
         whenDone(false);
@@ -60,6 +60,7 @@ function loadRestaurants(whenDone) {
         }
 
         addPhotos(function () {
+            saveSearch(settings.lat, settings.lon, settings.distanceMiles, RestaurantInfo);
             whenDone(true);
         });
     });
@@ -75,6 +76,7 @@ function searchKeyFor(lat, lon, miles) {
     return lat.toFixed(3) + ',' + lon.toFixed(3) + ',' + miles
 }
 
+// returns saved search only if same as the parameters, and less than 10 mins
 function getSavedSearch(lat, lon, miles) {
     let raw = localStorage.getItem(SEARCH_KEY)
 
@@ -88,13 +90,14 @@ function getSavedSearch(lat, lon, miles) {
         return null
     }
 
-    if (new Date().getTime() - saved.when > SEARCH_MINUTES * 60 * 1000) {
+    if (new Date().getTime() - saved.when > SEARCH_MINUTES * 60 * 1000) { // 10-minute time limit
         return null
     }
 
     return saved
 }
 
+// keeps the last search so we dont look it up agian
 function saveSearch(lat, lon, miles, places) {
     localStorage.setItem(SEARCH_KEY, JSON.stringify({
         key: searchKeyFor(lat, lon, miles),
