@@ -44,9 +44,9 @@ $(function() {
                 'role="status"><span class="visually-hidden">Loading...</span></div>');
 
             // loading message if taking a while to load
-            $("#loading-message").text("").addClass("d-none");
+            $("#loading-message").text("").removeClass("d-none");
             let loadMessage = setTimeout(function () {
-                $("#loading-message").removeClass("d-none");
+                $("#loading-message").text("Still loading your restaurants, please wait another moment...");
             }, 10000);
             let loadMessage2 = setTimeout(function () {
                 $("#loading-message").text("Taking longer than expected, please wait another moment...");
