@@ -1,4 +1,4 @@
--- run this in the supabase SQL editor
+-- used AI to learn how supabase schemas work, wrote this one myself then got AI to check it over
 
 create table if not exists groups (
   code            text primary key,
@@ -22,7 +22,7 @@ create table if not exists places (
   cuisine     text default '',
   hours       text default '',
   address     text default '',
-
+  -- distance (Version-2)?
   photo_ref   text default ''
 );
 
@@ -36,14 +36,13 @@ create table if not exists votes (
   primary key (group_code, member_id, place_name)
 );
 
--- row level security, the publishable key is in the browser so this is what protects the data
 
 alter table groups  enable row level security;
 alter table members enable row level security;
 alter table places  enable row level security;
 alter table votes   enable row level security;
 
--- no logins, you just need the group code
+--just need the group code
 
 drop policy if exists "anon read groups"   on groups;
 drop policy if exists "anon insert groups" on groups;
@@ -71,7 +70,7 @@ create policy "anon insert votes" on votes for insert to anon with check (true);
 create policy "anon update votes" on votes for update to anon using (true) with check (true);
 create policy "anon delete votes" on votes for delete to anon using (true);
 
--- realtime, so the members list updates without a refresh
+-- members list updates without refresheing 
 alter publication supabase_realtime add table members;
 alter publication supabase_realtime add table votes;
 

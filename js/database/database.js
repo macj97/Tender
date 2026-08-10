@@ -17,6 +17,7 @@
         { Name: "Hilary", Joined: true }
     ];
 
+    // remembers that i liked this place
     function saveLike(name) {
         let liked = getMyLikes();
 
@@ -27,6 +28,7 @@
         sessionStorage.setItem("tenderLikes", JSON.stringify(liked));
     }
 
+    // gets back everythign ive liked so far
     function getMyLikes() {
         let saved = sessionStorage.getItem("tenderLikes");
 
@@ -37,6 +39,7 @@
         return [];
     }
 
+    // takes a like back off, for the back button
     function removeLike(name) {
         let liked = getMyLikes();
         let spot = liked.indexOf(name);
@@ -48,6 +51,7 @@
         sessionStorage.setItem("tenderLikes", JSON.stringify(liked));
     }
 
+    //wipes all my likes
     function clearLikes() {
         sessionStorage.removeItem("tenderLikes");
     }
@@ -71,7 +75,7 @@
                 }
             }
 
-                    if (likes > 0) {
+            if (likes > 0) {
                 matches.push({ Place: place, Likes: likes });
             }
         }

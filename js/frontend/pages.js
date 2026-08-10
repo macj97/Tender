@@ -2,9 +2,10 @@
 
 $(function() {
 
-    const GroupCode = getGroupCode();
-    const inGroup = isCloudMode();
+    const GroupCode = getGroupCode(); // string for part of page url, used for group code
+    const inGroup = isCloudMode(); // boolean for if user has invite code in URL, and datebase active
 
+    // keeps the group code on the link
     function withCode(page) {
         if (!GroupCode) {
             return page;
@@ -12,7 +13,6 @@ $(function() {
 
         return page + "?g=" + GroupCode;
     }
-
 
     // index.html
 
@@ -34,25 +34,44 @@ $(function() {
 
         $("#name-error").addClass("d-none");
 
+        //shows an error under the name box
         function showProblem(message) {
             $("#name-error").text(message).removeClass("d-none");
             $("#hungry-btn").text("I'm hungry");
         }
 
+        // finds the places then makes the group
         function goSearch() {
-            $("#hungry-btn").text("Finding places near you...");
+            $("#hungry-btn").text(" Finding places near you...");
+            $("#hungry-btn").prepend('<div class="spinner-border text-light" '+
+                'role="status"><span class="visually-hidden">Loading...</span></div>');
+
+            // loading message if taking a while to load
+            $("#loading-message").text("").removeClass("d-none");
+            let loadMessage = setTimeout(function () {
+                $("#loading-message").text("Still loading your restaurants, please wait another moment...");
+            }, 10000);
+            let loadMessage2 = setTimeout(function () {
+                $("#loading-message").text("Taking longer than expected, please wait another moment...");
+            }, 30000);
 
             loadRestaurants(function(ok) {
+                clearTimeout(loadMessage);
+                clearTimeout(loadMessage2);
+                $("#loading-message").text("").addClass("d-none");;
+
                 if (!ok) {
                     showProblem("Couldnt find anywhere near you, try a bigger distance.");
                     return;
                 }
 
-                $("#hungry-btn").text("Setting up your group...");
+                $("#hungry-btn").text(" Setting up your group...");
+                $("#hungry-btn").prepend('<div class="spinner-border text-light" '+
+                'role="status"><span class="visually-hidden">Loading...</span></div>');
 
                 createGroup(myName).then(function(code) {
                     if (!code) {
-                        showProblem("Couldnt set up the group, try again.");
+                        showProblem("Couldn't set up the group, try again.");
                         return;
                     }
 
@@ -66,7 +85,9 @@ $(function() {
             return;
         }
 
-        $("#hungry-btn").text("Asking for your location...");
+        $("#hungry-btn").text(" Asking for your location...");
+        $("#hungry-btn").prepend('<div class="spinner-border text-light" '+
+                'role="status"><span class="visually-hidden">Loading...</span></div>');
 
         askForLocation(function(gotIt) {
             if (!gotIt) {
@@ -78,13 +99,14 @@ $(function() {
         });
     });
 
-    //enter submits
+    //enter key submits
     $("#my-name").on("keypress", function(event) {
         if (event.which === 13) {
             $("#hungry-btn").trigger("click");
         }
     });
 
+    // join box for another user, on groupselection.html
     $("#join-name").on("keypress", function(event) {
         if (event.which === 13) {
             $("#join-btn").trigger("click");
@@ -114,6 +136,7 @@ $(function() {
         drawMembers(people);
     }
 
+    //draws the list of poeple
     function drawMembers(people) {
         $("#member-list").empty();
 
@@ -169,7 +192,7 @@ $(function() {
         });
     }
 
-    if ($("#member-list").length > 0) {
+    if ($("#member-list").length > 0) { // if "members-list" element exists
         if (GroupCode) {
             $("#link").text(getInviteLink(GroupCode));
             $("#button").attr("href", withCode("card.html"));
@@ -211,7 +234,7 @@ $(function() {
     // waiting.html
     //waits for the group
 
-    if ($("#waiting-spinner").length > 0) {
+    if ($("#waiting-spinner").length > 0) { // if there is a spinner
         if (inGroup) {
             loadGroupPlaces(GroupCode).then(function() {
                 let check = setInterval(function() {
@@ -234,18 +257,20 @@ $(function() {
     // settings.html
     //saves on change
 
+    //shows the saved message for a second
     function flashSaved() {
-        $("#saved-note").removeClass("d-none");
+        $("#saved-note").removeClass("d-none"); // Joe: where is saved-note?
 
         setTimeout(function() {
             $("#saved-note").addClass("d-none");
         }, 1500);
     }
 
+    // shows if youve shared your locaton
     function showLocationStatus() {
         let settings = getSettings();
 
-        if (haveLocation()) {
+        if (haveLocation()) { // Joe: showing the location coordinates?
             $("#location-status").removeClass("text-secondary text-danger").addClass("text-success fw-bold")
                 .text("shared (" + settings.lat.toFixed(3) + ", " + settings.lon.toFixed(3) + ")");
             $("#use-location").text("Update my location");
@@ -256,7 +281,7 @@ $(function() {
         }
     }
 
-    if ($("#reset-settings").length > 0) {
+    if ($("#reset-settings").length > 0) { // if reset-settings button exist
         let mine = getSettings();
         $("#distance-range-slider").val(mine.distanceMiles);
         $("#miles-bubble").text(mine.distanceMiles);
@@ -283,9 +308,11 @@ $(function() {
         });
 
         $("#use-location").on("click", function() {
-            $("#use-location").prop("disabled", true).text("Asking your browser...");
+            $("#use-location").prop("disabled", true).text(" Asking your browser...");
+            $("#use-location").prepend('<div class="spinner-border text-light spinner-border-sm" '+
+                'role="status"><span class="visually-hidden"> Loading...</span></div>');
 
-            askForLocation(function(gotIt) {
+            askForLocation(function(gotIt) { 
                 $("#use-location").prop("disabled", false);
                 showLocationStatus();
 
@@ -294,7 +321,7 @@ $(function() {
                 } else {
                     $("#location-status").removeClass("text-secondary text-success fw-bold")
                         .addClass("text-danger")
-                        .text("couldnt get it, Tender cant find places without it");
+                        .text("couldn't get it, Tender cant find places without it");
                 }
             });
         });

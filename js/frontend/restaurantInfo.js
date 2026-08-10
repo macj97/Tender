@@ -1,6 +1,6 @@
 // To be used to store the information gathered about restaurants
 // I created these 3 just to see if the swipping animation works
-// still to do: dietary, delivery, menu link
+// still to do: dietary, delivery, menu link (Version-2)
 let RestaurantInfo = [];
 
 function addRestaurant(name, image, cuisine, hours, address) {
@@ -58,7 +58,6 @@ function loadRestaurants(whenDone) {
     });
 }
 
-
 // keeps the last search
 const SEARCH_KEY = 'tenderLastSearch'
 const SEARCH_MINUTES = 10
@@ -68,6 +67,7 @@ function searchKeyFor(lat, lon, miles) {
     return lat.toFixed(3) + ',' + lon.toFixed(3) + ',' + miles
 }
 
+// returns saved search only if same as the parameters, and less than 10 mins
 function getSavedSearch(lat, lon, miles) {
     let raw = localStorage.getItem(SEARCH_KEY)
 
@@ -81,13 +81,14 @@ function getSavedSearch(lat, lon, miles) {
         return null
     }
 
-    if (new Date().getTime() - saved.when > SEARCH_MINUTES * 60 * 1000) {
+    if (new Date().getTime() - saved.when > SEARCH_MINUTES * 60 * 1000) { // 10-minute time limit
         return null
     }
 
     return saved
 }
 
+// keeps the last search so we dont look it up agian
 function saveSearch(lat, lon, miles, places) {
     localStorage.setItem(SEARCH_KEY, JSON.stringify({
         key: searchKeyFor(lat, lon, miles),

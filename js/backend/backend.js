@@ -23,12 +23,14 @@ function osmAddress(tags) {
 
 
 // the main overpass server goes down a lot so theres backups
+// "https://overpass-api.de/api/interpreter" was the first listed
 const OVERPASS_URLS = [
     "https://overpass-api.de/api/interpreter",
     "https://overpass.kumi.systems/api/interpreter",
     "https://overpass.private.coffee/api/interpreter"
 ];
 
+// goes and finds the resturants near you
 function searchNearbyOSM(latitude, longitude, onDone, which) {
     if (!which) {
         which = 0;
@@ -54,7 +56,7 @@ function searchNearbyOSM(latitude, longitude, onDone, which) {
 
         error: function () {
             if (which + 1 < OVERPASS_URLS.length) {
-                alert("that overpass server didnt work, trying the next one");
+                console.log("that overpass server didnt work, trying the next one");
                 searchNearbyOSM(latitude, longitude, onDone, which + 1);
                 return;
             }
@@ -73,7 +75,7 @@ function fillFromOSM(elements) {
     let seenNames = [];
 
     for (let i = 0; i < elements.length; i++) {
-        if (RestaurantInfo.length === 10) {
+        if (RestaurantInfo.length === 10) { // '10' can be variable in settings (Version-2)
             break;
         }
 
