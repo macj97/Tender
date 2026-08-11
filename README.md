@@ -75,14 +75,9 @@ In this project, we used the following APIs and platforms to make our features w
 - [Google Places API](https://developers.google.com/maps/documentation/places/web-service) - used to get restaurant photo data for the restaurant cards.
 - [Supabase](https://supabase.com/) - used to store shared group data, member information, restaurant lists and votes.
 
-## Important Notes for developers
+## Important Notes for Developers
 
 - OpenStreetMap data requires attribution.
 - Google Places content has caching and storage restrictions so restaurant photo data should be loaded dynamically instead of stored permanently.
 - These services were used only to support the app’s features and have to follow their own terms and licenses.
-
-
-
-
-
-
+- Loading time from the first page and when updating the settings may take several minutes due to query to OpenStreetMaps servers
