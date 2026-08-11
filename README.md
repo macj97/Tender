@@ -13,6 +13,13 @@ uses a swiping interface to help groups decide where to eat. Users can swipe rig
 on it. After everyone in the group has voted the app compares the group's choices and it will show the restaurants with
 the most likes.
 
+## Project Contributors
+
+Jay Patel - jay_patel2@student.uml.edu
+Joe Plummer - joseph_plummer@student.uml.edu
+Hilary Stacy Jaen Rodriguez — hilary_jaenrodriguez@student.uml.edu
+Riley Stevens - riley_stevens@student.uml.edu
+
 ## Project structure 
 
 - `css/frontend.css` - Contains the custom styling for the app including swipe animations, card layout, results styling and responsive adjustments.
@@ -42,7 +49,7 @@ and updates each restaurant entry with a photo once all image requests are compl
 ## How to Run the App
 
 - Clone the repository or download the Zip file.
-- Run the project on a private server environment
+- Run the project on a private server environment with your preferred IDE.
 - Do not open the HTML files directly in the browser because some features require server permissions.
 - Make sure the required API and database configuration files are set up.
 - Start the App.
