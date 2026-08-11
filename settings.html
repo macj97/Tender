@@ -88,14 +88,24 @@
                 <span>1 mile</span>
                 <span>30 miles</span>
             </div>
-            
-            <button id="reset-settings" type="button" class="btn btn-outline-secondary fw-bold">
-                Reset settings
-            </button>
 
-            <button id="back-btn" type="button" class="btn btn-outline-secondary fw-bold" onclick="history.back()">
-                Back
-            </button>
+            <div class="mt-4">
+                <button id="reset-settings" type="button" class="btn btn-outline-secondary fw-bold">
+                    Reset settings
+                </button>
+
+                <button id="back-btn" type="button" class="btn btn-outline-secondary fw-bold">
+                    Back
+                </button>
+            </div>
+
+            <!-- pages.js shows this when something saves (d-none class should be in both)-->
+            <div class="mt-4">
+                <div id="saved-note-spinner" class="spinner-border text-success d-none" role="status">
+                    <span class="visually-hidden">Loading...</span></div>
+                <p id="saved-note" class="text-success fw-bold mt-2 mb-0 d-none">Settings have been saved.</p>
+            </div>
+            
 
         </div>
     </div>

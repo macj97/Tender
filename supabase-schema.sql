@@ -58,8 +58,11 @@ create policy "anon insert members" on members for insert to anon with check (tr
 
 drop policy if exists "anon read places"   on places;
 drop policy if exists "anon insert places" on places;
+drop policy if exists "anon delete places" on places;
 create policy "anon read places"   on places for select to anon using (true);
 create policy "anon insert places" on places for insert to anon with check (true);
+-- owner needs this to swap the restaurants out when the radius changes
+create policy "anon delete places" on places for delete to anon using (true);
 
 drop policy if exists "anon read votes"   on votes;
 drop policy if exists "anon insert votes" on votes;
