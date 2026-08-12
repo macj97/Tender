@@ -1,5 +1,9 @@
 # Tender
 
+## Github Repo
+
+https://github.com/macj97/Tender
+
 ## Motivation
 
 Everyone has had that moment, when out with friends, where your event went too long and unexpectedly you’ve run into dinnertime
