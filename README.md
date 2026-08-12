@@ -15,10 +15,10 @@ the most likes.
 
 ## Project Contributors
 
--Jay Patel - jay_patel2@student.uml.edu
--Joe Plummer - joseph_plummer@student.uml.edu
--Hilary Stacy Jaen Rodriguez — hilary_jaenrodriguez@student.uml.edu
--Riley Stevens - riley_stevens@student.uml.edu
+- Jay Patel - jay_patel2@student.uml.edu
+- Joe Plummer - joseph_plummer@student.uml.edu
+- Hilary Stacy Jaen Rodriguez — hilary_jaenrodriguez@student.uml.edu
+- Riley Stevens - riley_stevens@student.uml.edu
 
 ## Project structure 
 
